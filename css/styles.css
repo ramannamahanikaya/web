@@ -1,0 +1,46 @@
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: #fffbe9;
+  color: #4b3e2e;
+}
+.hero {
+  background: rgba(255, 255, 255, 0.85);
+  min-height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card {
+  border-radius: 1rem;
+  border: none;
+}
+.card-title {
+  color: #bfa14a;
+}
+.navbar {
+  background: #fffbe9 !important;
+}
+.navbar-brand {
+  font-weight: bold;
+  color: #bfa14a !important;
+}
+.nav-link {
+  color: #4b3e2e !important;
+}
+.nav-link.active, .nav-link:focus, .nav-link:hover {
+  color: #bfa14a !important;
+}
+footer {
+  background: #4b3e2e !important;
+  color: #fffbe9 !important;
+}
+footer a {
+  color: #bfa14a !important;
+}
+.quick-links .card {
+  transition: transform 0.2s;
+}
+.quick-links .card:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 4px 24px rgba(191, 161, 74, 0.15);
+} 

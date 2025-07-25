@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ramanna Nikaya</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    html, body {
+      height: 100%;
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    main, .main-content {
+      flex: 1 0 auto;
+    }
+    footer {
+      flex-shrink: 0;
+    }
+    .carousel-title {
+      font-family: 'Georgia', serif;
+      font-size: 3rem;
+      color: #fff;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      letter-spacing: 0.1em;
+    }
+    .carousel-gradient {
+      position: absolute;
+      left: 0; right: 0; bottom: 0; top: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
+      z-index: 1;
+    }
+    .carousel-content {
+      position: absolute;
+      left: 0; right: 0; top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      text-align: center;
+      width: 100%;
+    }
+    .swiper {
+      width: 100vw;
+      height: 60vh;
+      position: relative;
+      margin-bottom: 0;
+    }
+    .swiper-slide img {
+      width: 100vw;
+      height: 60vh;
+      object-fit: cover;
+    }
+    .announcements {
+      background: #fffbe9;
+      padding: 2rem 0;
+    }
+    .blog-section, .event-section {
+      background: #f8f9fa;
+      padding: 2rem 0;
+    }
+    .calendar-section {
+      background: #fffbe9;
+      padding: 2rem 0;
+    }
+    .calendar-table th, .calendar-table td {
+      text-align: center;
+      vertical-align: middle;
+    }
+    .calendar-shade {
+      opacity: 0.4;
+      filter: grayscale(0.7);
+      pointer-events: none;
+      min-width: 260px;
+      max-width: 320px;
+    }
+    .calendar-main {
+      min-width: 320px;
+      max-width: 400px;
+      box-shadow: 0 0 16px rgba(0,0,0,0.08);
+      background: #fff;
+      border-radius: 1rem;
+      padding: 1rem;
+    }
+    .calendar-table th, .calendar-table td {
+      text-align: center;
+      vertical-align: middle;
+      width: 2.5em;
+      height: 2.5em;
+    }
+    .calendar-table th {
+      background: #f7e7b7;
+    }
+    .calendar-table td.today {
+      background: #bfa14a;
+      color: #fff;
+      border-radius: 50%;
+    }
+    .announcement-carousel {
+      width: 100%;
+      height: 350px;
+      position: relative;
+    }
+    .announcement-box {
+      min-width: 640px;
+      max-width: 640px;
+      margin: 0 16px;
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 2px 12px rgba(191,161,74,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #bfa14a;
+      text-decoration: none;
+      transition: box-shadow 0.2s;
+      border: 2px solid #f7e7b7;
+      height: 350px;
+      overflow: hidden;
+      white-space: normal;
+      text-overflow: ellipsis;
+      text-align: center;
+      padding: 2rem;
+    }
+    .announcement-box:hover {
+      box-shadow: 0 4px 24px rgba(191,161,74,0.18);
+      color: #4b3e2e;
+      text-decoration: underline;
+    }
+    .announcement-carousel-wrapper {
+      position: relative;
+      width: 100%;
+      min-height: 350px;
+      max-width: 350px;
+    }
+    #ann-left, #ann-right {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      z-index: 2;
+    }
+    @media (max-width: 600px) {
+      .announcement-box {
+        min-width: 98vw;
+        max-width: 98vw;
+        font-size: 1rem;
+        height: 220px;
+        padding: 1rem;
+      }
+      .announcement-carousel {
+        height: 220px;
+      }
+      .announcement-carousel-wrapper {
+        max-width: 98vw;
+        min-height: 220px;
+      }
+    }
+    .sticky-image-section {
+      position: relative;
+      width: 100vw;
+      margin-left: 50%;
+      transform: translateX(-50%);
+      background: #fffbe9;
+      z-index: 1;
+    }
+    .sticky-image-outer {
+      position: relative;
+      width: 100vw;
+      height: 200vh; /* Make this much taller */
+      min-height: 400px;
+      max-height: 700px;
+      overflow: visible;
+    }
+    .sticky-image-inner {
+      position: sticky;
+      top: 20vh;
+      width: 100vw;
+      height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.7s;
+    }
+    .sticky-image-inner.visible {
+      opacity: 1;
+    }
+    .sticky-image {
+      width: 100vw;
+      height: 60vh;
+      object-fit: cover;
+      border-radius: 0;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      filter: brightness(0.95) contrast(1.05);
+    }
+    .sticky-image-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fffbe9;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.5);
+      background: linear-gradient(180deg,rgba(0,0,0,0.25) 0%,rgba(0,0,0,0.55) 100%);
+      z-index: 3;
+      pointer-events: none;
+    }
+    .sticky-image-content {
+      background: #fffbe9;
+      z-index: 1;
+    }
+    @media (max-width: 900px) {
+      .sticky-image-inner, .sticky-image {
+        height: 40vh;
+        min-height: 200px;
+      }
+      .sticky-image-outer {
+        height: 40vh;
+        min-height: 200px;
+      }
+    }
+    .poya-info-box {
+      border-left: 6px solid #bfa14a;
+      background: #fffbe9;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    @media (max-width: 900px) {
+      .calendar-main {
+        min-width: 0;
+        max-width: 100vw;
+      }
+      .poya-info-box {
+        min-height: 120px;
+        padding: 1rem;
+      }
+    }
+    .calendar-container {
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+    .calendar-table {
+      table-layout: fixed;
+    }
+    .calendar-table th,
+    .calendar-table td {
+      text-align: center;
+      padding: 8px;
+    }
+    .calendar-table td.today {
+      background-color: #ffc107;
+      font-weight: bold;
+      border-radius: 50%;}
+  </style>
+</head>
+<body>
+  <!-- 1. Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="index.html"><img src="assets/logo.png" alt="Ramanna Nikaya Logo" height="40"> Ramanna Nikaya</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">මුල් පිටුව</a></li>
+          <li class="nav-item"><a class="nav-link" href="events.html">නව සිදුවීම්</a></li>
+          <li class="nav-item"><a class="nav-link" href="posts.html">ලිපි</a></li>
+          <li class="nav-item"><a class="nav-link" href="exams.html">විභාග</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">අපව අමතන්න</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-content">
+  <!-- 2. Full-width Image Carousel/Slider -->
+  <section class="position-relative">
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide position-relative">
+          <img src="assets/hero-bg.jpg" alt="Paradēese 1">
+          <div class="carousel-gradient"></div>
+          <div class="carousel-content">
+            <div class="carousel-title">සන්සුන් මග</div>
+            <div class="lead text-light">ශාන්ති සහ ප්‍රඥාව වෙත ගමනක්</div>
+          </div>
+        </div>
+        <div class="swiper-slide position-relative">
+          <img src="assets/hero-bg2.jpg" alt="Paradēese 2">
+          <div class="carousel-gradient"></div>
+          <div class="carousel-content">
+            <div class="carousel-title">සන්සුන් මග</div>
+            <div class="lead text-light">ශාන්ති සහ ප්‍රඥාව වෙත ගමනක්</div>
+          </div>
+        </div>
+        <div class="swiper-slide position-relative">
+          <img src="assets/hero-bg3.jpg" alt="Paradēese 3">
+          <div class="carousel-gradient"></div>
+          <div class="carousel-content">
+            <div class="carousel-title">සන්සුන් මග</div>
+            <div class="lead text-light">අපගේ සංගමයට එක්වන්න</div>
+          </div>
+        </div>
+      </div>
+      <!-- Navigation arrows -->
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+      <!-- Pagination dots -->
+      <div class="swiper-pagination"></div>
+    </div>
+  </section>
+
+  <!-- 3. Announcements Section -->
+  <section class="announcements">
+    <div class="container">
+      <h2 class="mb-4 text-center">නිවේදන</h2>
+      <div class="announcement-carousel-wrapper position-relative mx-auto" style="max-width: 1100px;">
+        <button id="ann-left" class="btn btn-light position-absolute top-50 start-0 translate-middle-y z-2" style="left:-30px;" aria-label="Previous announcement"><span class="fs-3">&#8592;</span></button>
+        <div class="announcement-carousel overflow-hidden" style="width: 100%;">
+          <div id="announcement-track" class="d-flex align-items-center" style="transition: transform 0.5s cubic-bezier(.4,2,.6,1);">
+            <!-- Announcement boxes will be rendered here -->
+          </div>
+        </div>
+        <button id="ann-right" class="btn btn-light position-absolute top-50 end-0 translate-middle-y z-2" style="right:-30px;" aria-label="Next announcement"><span class="fs-3">&#8594;</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Quick Links (updated) -->
+  <section class="quick-links py-5">
+    <div class="container">
+      <div class="row g-4 text-center">
+        <div class="col-md-3">
+          <a href="events.html" class="text-decoration-none">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body">
+                <img src="assets/events.png" alt="Events" height="50">
+                <h5 class="card-title mt-2">නව සිදුවීම්</h5>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-3">
+          <a href="posts.html" class="text-decoration-none">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body">
+                <img src="assets/blog1.jpg" alt="Posts" height="50">
+                <h5 class="card-title mt-2">ලිපි</h5>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-3">
+          <a href="exams.html" class="text-decoration-none">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body">
+                <img src="assets/exam1.jpg" alt="Exams" height="50">
+                <h5 class="card-title mt-2">විභාග</h5>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-3">
+          <a href="contact.html" class="text-decoration-none">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body">
+                <img src="assets/contact.png" alt="Contact" height="50">
+                <h5 class="card-title mt-2">අපව අමතන්න</h5>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Blog Post Section -->
+  <section class="blog-section">
+    <div class="container">
+      <h2 class="mb-4 text-center">නවතම ලිපි පෙළ</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card h-100">
+            <img src="assets/blog1.jpg" class="card-img-top" alt="Blog 1">
+            <div class="card-body">
+              <h5 class="card-title">සතියේ මනෝසන්ය මග</h5>
+              <p class="card-text">මනෝසන්ය ඔබේ දිනපතා ජීවිතය වෙනස් කළ හැකි ආකාරය.</p>
+              <a href="#" class="btn btn-outline-primary">වැඩිදුර කියවන්න</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100">
+            <img src="assets/blog2.jpg" class="card-img-top" alt="Blog 2">
+            <div class="card-body">
+              <h5 class="card-title">Understanding Poya Days</h5>
+              <p class="card-text">Learn about the significance of Poya days in the Buddhist calendar.</p>
+              <a href="#" class="btn btn-outline-primary">Read More</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100">
+            <img src="assets/blog3.jpg" class="card-img-top" alt="Blog 3">
+            <div class="card-body">
+              <h5 class="card-title">Meditation for Beginners</h5>
+              <p class="card-text">A simple guide to starting your meditation journey with confidence.</p>
+              <a href="#" class="btn btn-outline-primary">Read More</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Event Section -->
+  <section class="event-section">
+    <div class="container">
+      <h2 class="mb-4 text-center">නව සිදුවීම්</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card h-100">
+            <img src="assets/event1.jpg" class="card-img-top" alt="Event 1">
+            <div class="card-body">
+              <h5 class="card-title">වෙසක් උත්සවය 2024</h5>
+              <p class="card-text">ධර්ම දේශනා, භාවනා සහ දාන වන්දනා සමඟ වාර්ෂික උත්සවය.</p>
+              <a href="#" class="btn btn-outline-primary">Learn More</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100">
+            <img src="assets/event2.jpg" class="card-img-top" alt="Event 2">
+            <div class="card-body">
+              <h5 class="card-title">Weekly Meditation Program</h5>
+              <p class="card-text">Join our weekly meditation sessions every Saturday at the main monastery.</p>
+              <a href="#" class="btn btn-outline-primary">Learn More</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100">
+            <img src="assets/event3.jpg" class="card-img-top" alt="Event 3">
+            <div class="card-body">
+              <h5 class="card-title">Dhamma Book Release</h5>
+              <p class="card-text">New Dhamma book on the teachings of the Buddha now available for download.</p>
+              <a href="#" class="btn btn-outline-primary">Learn More</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6.5. Modern Call-to-Action Section (replaces sticky image reveal) -->
+  <section class="cta-section position-relative text-center text-light py-5" style="background: url('assets/hero-bg2.jpg') center/cover no-repeat; min-height: 320px;">
+    <div class="cta-overlay position-absolute top-0 start-0 w-100 h-100" style="background: rgba(0,0,0,0.5);"></div>
+    <div class="container position-relative" style="z-index:2;">
+      <h2 class="display-4 fw-bold mb-3">Join Our Next Dhamma Event</h2>
+      <p class="lead mb-4">Experience peace, wisdom, and community. Explore our upcoming events and be part of the journey.</p>
+      <a href="events.html" class="btn btn-lg btn-warning fw-bold px-5">See Events</a>
+    </div>
+  </section>
+
+  <!-- 7. Calendar Section (Poya Days) -->
+  <section class="calendar-section">
+    <div class="calendar-container">
+    <h4 class="text-center fw-bold mb-3">Buddhist Calendar</h4>
+
+    <!-- Poya Day Display -->
+    <div class="text-center mb-3">
+      <span class="fw-bold">Poya Day:</span> <span id="poya-day">-</span>
+    </div>
+
+    <!-- Month Navigation -->
+    <div class="d-flex justify-content-between mb-2">
+      <button class="btn btn-outline-primary btn-sm" onclick="changeMonth(-1)">&#8592; Previous</button>
+      <button class="btn btn-outline-primary btn-sm" onclick="resetToCurrentMonth()">Today</button>
+      <button class="btn btn-outline-primary btn-sm" onclick="changeMonth(1)">Next &#8594;</button>
+    </div>
+
+    <!-- Calendar Display -->
+    <div id="current-calendar"></div>
+  </div>
+  </section>
+  </main>
+
+  <!-- 8. Footer -->
+  <footer class="bg-dark text-light py-4 mt-5">
+    <div class="container text-center">
+      <p class="mb-1">&copy; 2024 Ramanna Nikaya. All rights reserved.</p>
+      <p class="mb-0 small">Contact: info@ramannanikaya.lk | +94 11 123 4567</p>
+      <div class="mt-2">
+        <a href="#" class="text-light me-2"><i class="bi bi-facebook"></i></a>
+        <a href="#" class="text-light me-2"><i class="bi bi-youtube"></i></a>
+        <a href="#" class="text-light"><i class="bi bi-instagram"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="js/scripts.js"></script>
+  <script>
+    // Swiper carousel initialization
+    const swiper = new Swiper('.swiper', {
+      loop: true,
+      autoplay: { delay: 4000, disableOnInteraction: false },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      effect: 'fade',
+      fadeEffect: { crossFade: true },
+      speed: 800
+    });
+
+    // Announcements carousel
+    const announcementList = [
+      { text: 'Welcome to the new Ramanna Nikaya website!', link: '#' },
+      { text: 'Vesak Poya will be celebrated on May 23, 2024.', link: '#' },
+      { text: 'Weekly meditation every Saturday at 6pm.', link: '#' },
+      { text: 'Special Dhamma talk this Sunday.', link: '#' },
+      { text: 'New Dhamma book available for download.', link: '#' }
+    ];
+    let annIndex = 0;
+    const annTrack = document.getElementById('announcement-track');
+    const visibleCards = 3;
+    function renderAnnouncementCarousel() {
+      annTrack.innerHTML = '';
+      announcementList.forEach((ann, idx) => {
+        const box = document.createElement('a');
+        box.className = 'announcement-box flex-shrink-0';
+        box.href = ann.link;
+        box.tabIndex = 0;
+        box.innerText = ann.text;
+        annTrack.appendChild(box);
+      });
+      updateAnnCarousel();
+    }
+    function updateAnnCarousel() {
+      // Center the active box in the carousel
+      const cardWidth = 672; // 640px + 2*16px margin
+      const wrapper = document.querySelector('.announcement-carousel-wrapper');
+      const visibleWidth = wrapper ? wrapper.offsetWidth : 1100;
+      // Center the active card
+      const offset = (cardWidth * annIndex) - (visibleWidth / 2) + (cardWidth / 2);
+      annTrack.style.transform = `translateX(${-offset}px)`;
+    }
+    document.getElementById('ann-left').onclick = function() {
+      if (annIndex > 0) {
+        annIndex--;
+        updateAnnCarousel();
+      }
+    };
+    document.getElementById('ann-right').onclick = function() {
+      if (annIndex < announcementList.length - 1) {
+        annIndex++;
+        updateAnnCarousel();
+      }
+    };
+    window.addEventListener('resize', updateAnnCarousel);
+    renderAnnouncementCarousel();
+
+    // Calendar rendering
+    // Poya Day mapping
+    const poyaDays = {
+      0: "Duruthu Poya",
+      1: "Navam Poya",
+      2: "Medin Poya",
+      3: "Bak Poya",
+      4: "Vesak Poya",
+      5: "Poson Poya",
+      6: "Esala Poya",
+      7: "Nikini Poya",
+      8: "Binara Poya",
+      9: "Vap Poya",
+      10: "Il Poya",
+      11: "Unduvap Poya"
+    };
+
+    // Track selected month and year
+    let selectedDate = new Date();
+
+    function renderCalendar(target, year, month, highlightToday) {
+      const now = new Date();
+      const today = now.getDate();
+      const thisMonth = now.getMonth();
+      const thisYear = now.getFullYear();
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const monthNames = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ];
+
+      let html = `<div class='text-center fw-bold mb-2'>${monthNames[month]} ${year}</div>`;
+      html += `<table class='table calendar-table mb-0'><thead><tr>`;
+      ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d => html += `<th>${d}</th>`);
+      html += `</tr></thead><tbody><tr>`;
+
+      let dayOfWeek = firstDay === 0 ? 7 : firstDay; // Adjust Sunday to 7
+      for (let i = 1; i < dayOfWeek; i++) html += '<td></td>';
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const isToday = highlightToday && d === today && month === thisMonth && year === thisYear;
+        html += `<td class='${isToday ? 'today' : ''}'>${d}</td>`;
+        dayOfWeek++;
+        if (dayOfWeek > 7) {
+          html += '</tr><tr>';
+          dayOfWeek = 1;
+        }
+      }
+
+      html += '</tr></tbody></table>';
+      document.getElementById(target).innerHTML = html;
+
+      // Update Poya Day
+      document.getElementById('poya-day').textContent = poyaDays[month] || '-';
+    }
+
+    function updateCalendar() {
+      const year = selectedDate.getFullYear();
+      const month = selectedDate.getMonth();
+      const highlightToday = (year === new Date().getFullYear() && month === new Date().getMonth());
+      renderCalendar("current-calendar", year, month, highlightToday);
+    }
+
+    function changeMonth(offset) {
+      selectedDate.setMonth(selectedDate.getMonth() + offset);
+      updateCalendar();
+    }
+
+    function resetToCurrentMonth() {
+      selectedDate = new Date();
+      updateCalendar();
+    }
+
+    // Initialize on load
+    updateCalendar();
+  </script>
+</body>
+</html> 
